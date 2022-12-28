@@ -1,7 +1,12 @@
 const User = require("../models/User");
 
-const create = (body) => User.create(body);
+//User.create -> create,find, findById are from moongose
+const createService = (body) => User.create(body);
+const findAllService = () => User.find();
+const findByIdService = (id) => User.findById(id);
 
 module.exports = {
-  create,
+  createService,
+  findAllService,
+  findByIdService,
 };
