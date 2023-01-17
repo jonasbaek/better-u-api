@@ -14,8 +14,8 @@ const login = async (req, res) => {
     }
     const token = authService.generateToken(user.id);
     res.send(token);
-  } catch (err) {
-    res.status("500").send(err.message);
+  } catch (error) {
+    res.status("500").send(error.message);
   }
 };
 

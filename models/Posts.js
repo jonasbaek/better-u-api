@@ -1,6 +1,6 @@
-import mongoose from "moongose";
+import mongoose from "mongoose";
 
-const PostsSchema = new mongoose.schema({
+const PostsSchema = new mongoose.Schema({
   title: {
     type: String,
     require: true,
