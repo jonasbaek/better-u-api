@@ -3,11 +3,13 @@ import mongoose from "mongoose";
 const PostsSchema = new mongoose.Schema({
   title: {
     type: String,
-    require: true,
+    required: true,
+    maxlength: [100, "Title must be less than 100 characters"],
   },
   text: {
     type: String,
-    require: true,
+    required: true,
+    maxlength: [5000, "Text must be less than 5000 characters"],
   },
   createdAt: {
     type: Date,
@@ -16,15 +18,33 @@ const PostsSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    require: true,
+    required: true,
   },
-  likes: {
-    type: Array,
-    require: true,
-  },
-  comments: {
-    type: Array,
-    require: true,
+  likes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
+  comments: [
+    {
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+      text: {
+        type: String,
+        required: true,
+        maxlength: [1000, "Comment text must be less than 1000 characters"],
+      },
+      createdAt: {
+        type: Date,
+        default: Date.now(),
+      },
+    },
+  ],
+  image: {
+    type: String,
   },
 });
 
