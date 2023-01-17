@@ -8,16 +8,16 @@ const create = async (req, res) => {
         message: "Submit all fields for registration",
       });
     }
-    await postsService.createService({
+    const post = await postsService.createService({
       title,
       text,
-      user: {
-        _id: req.userId,
-      },
+      user: req.user._id,
     });
+    req.user.posts.push(post);
+    await req.user.save();
     res.sendStatus(201);
   } catch (error) {
-    res.status("500").send(error.message);
+    res.status(500).send(error.message);
   }
 };
 
@@ -66,10 +66,13 @@ const findAll = async (req, res) => {
         text: post.text,
         likes: post.likes,
         comments: post.comments,
+        image: post.image,
         user: {
           name: post.user.name,
           username: post.user.username,
+          avatar: post.user.avatar,
         },
+        posts: post.posts,
       })),
     });
   } catch (error) {
