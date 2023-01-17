@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const connectDatabase = () => {
+  mongoose.set("strictQuery", true);
   mongoose
     .connect(`${process.env.mongodbConnection}`, {
       useNewUrlParser: true,
