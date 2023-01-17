@@ -8,13 +8,14 @@ const create = async (req, res) => {
         message: "Submit all fields for registration",
       });
     }
-
     await postsService.createService({
       title,
       text,
-      id: "testeId",
+      user: {
+        _id: req.userId,
+      },
     });
-    res.send(201);
+    res.sendStatus(201);
   } catch (error) {
     res.status("500").send(error.message);
   }
