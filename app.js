@@ -1,11 +1,14 @@
 import createError from "http-errors";
-import express from "express";
-import path from "path";
 import cookieParser from "cookie-parser";
-import logger from "morgan";
 import connectDatabase from "./database/db.js";
+import express from "express";
+import logger from "morgan";
+import path from "path";
+
 import indexRouter from "./routes/index.js";
 import userRouter from "./routes/user.js";
+import authRouter from "./routes/auth.js";
+
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import "dotenv/config";
@@ -19,6 +22,7 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
 connectDatabase();
+
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -27,6 +31,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/user", userRouter);
+app.use("/auth", authRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

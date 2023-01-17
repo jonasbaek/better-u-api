@@ -1,4 +1,4 @@
-import express from "express";
+import { Router } from "express";
 import userController from "../controllers/user.js";
 import {
   validId,
@@ -6,7 +6,7 @@ import {
   validUserCreation,
 } from "../middlewares/global.js";
 
-const router = express.Router();
+const router = Router();
 
 router.post("/", validUserCreation, userController.create);
 router.get("/", userController.findAll);
