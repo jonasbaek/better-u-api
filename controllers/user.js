@@ -2,14 +2,10 @@ import userService from "../services/user.js";
 
 const create = async (req, res) => {
   try {
-    const { name, username, email, password, avatar, background } = req.body;
-    if (!name || !username || !email || !password) {
-      res.status(401).send({ error: "Submit all fields for registration" });
-    }
-
+    const { name, username, email, avatar, background } = req.body;
     res.status(201).send({
       user: {
-        id: user._id,
+        id: req.user._id,
         name,
         username,
         email,
