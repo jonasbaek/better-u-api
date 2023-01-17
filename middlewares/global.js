@@ -1,9 +1,9 @@
-const mongoose = require("mongoose");
-const userService = require("../services/user");
+import mongoose from "mongoose";
+import userService from "../services/user.js";
 
 //middlewares são funções de interceptações, entre a rota e o callback
 
-const validId = (req, res, next) => {
+export const validId = (req, res, next) => {
   try {
     const id = req.params.id;
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -16,7 +16,7 @@ const validId = (req, res, next) => {
   }
 };
 
-const validUser = async (req, res, next) => {
+export const validUser = async (req, res, next) => {
   try {
     const id = req.params.id;
     const user = await userService.findByIdService(id);
@@ -31,5 +31,3 @@ const validUser = async (req, res, next) => {
     res.status(500).send({ message: error.message });
   }
 };
-
-module.exports = { validId, validUser };
