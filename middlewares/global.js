@@ -4,24 +4,32 @@ const userService = require("../services/user");
 //middlewares são funções de interceptações, entre a rota e o callback
 
 const validId = (req, res, next) => {
-  const id = req.params.id;
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).send({ message: "Invalid ID" });
-  }
+  try {
+    const id = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).send({ message: "Invalid ID" });
+    }
 
-  next(); //serve para dar prosseguimento após o middleware ser executado
+    next(); //serve para dar prosseguimento após o middleware ser executado
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
 };
 
 const validUser = async (req, res, next) => {
-  const id = req.params.id;
-  const user = await userService.findByIdService(id);
-  if (!user) {
-    return res.status(400).send({ message: "User not found" });
-  }
-  req.id = id;
-  req.user = user;
+  try {
+    const id = req.params.id;
+    const user = await userService.findByIdService(id);
+    if (!user) {
+      return res.status(400).send({ message: "User not found" });
+    }
+    req.id = id;
+    req.user = user;
 
-  next();
+    next();
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
 };
 
 module.exports = { validId, validUser };
