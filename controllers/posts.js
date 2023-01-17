@@ -48,19 +48,13 @@ const findAll = async (req, res) => {
         : null;
 
     //pagination
-
-    if (posts.length === 0) {
-      res.status(400).send({
-        message: "There are no posts!",
-      });
-    }
     res.send({
       nextUrl,
       previousUrl,
       limit,
       offset,
       total,
-      results: posts.map((post) => ({
+      posts: posts?.map((post) => ({
         id: post._id,
         title: post.title,
         text: post.text,
@@ -72,7 +66,6 @@ const findAll = async (req, res) => {
           username: post.user.username,
           avatar: post.user.avatar,
         },
-        posts: post.posts,
       })),
     });
   } catch (error) {
@@ -80,4 +73,27 @@ const findAll = async (req, res) => {
   }
 };
 
-export default { create, findAll };
+const findByUserId = async (req, res) => {
+  try {
+    const posts = await postsService.findByUserIdService(req.params.id);
+    res.send({
+      posts: posts?.map((post) => ({
+        id: post._id,
+        title: post.title,
+        text: post.text,
+        likes: post.likes,
+        comments: post.comments,
+        image: post.image,
+        user: {
+          name: post.user.name,
+          username: post.user.username,
+          avatar: post.user.avatar,
+        },
+      })),
+    });
+  } catch (error) {
+    res.status("500").send(error.message);
+  }
+};
+
+export default { create, findAll, findByUserId };
