@@ -21,18 +21,60 @@ const create = async (req, res) => {
   }
 };
 
-const getAll = async (req, res) => {
+const findAll = async (req, res) => {
   try {
-    const posts = await postsService.findAllService();
+    //pagination
+    let { limit, offset } = req.query;
+    limit = Number(limit);
+    offset = Number(offset);
+    if (!limit) {
+      limit = 5;
+    }
+    if (!offset) {
+      offset = 0;
+    }
+    const posts = await postsService.findAllService(limit, offset);
+    const total = await postsService.countPosts();
+    const currentUrl = req.baseUrl;
+
+    const next = offset + limit;
+    const nextUrl =
+      next < total ? `${currentUrl}?limit=${limit}&offset=${next}` : null;
+
+    const previous = offset - limit < 0 ? null : offset - limit;
+    const previousUrl =
+      previous != null
+        ? `${currentUrl}?limit=${limit}&offset=${previous}`
+        : null;
+
+    //pagination
+
     if (posts.length === 0) {
       res.status(400).send({
         message: "There are no posts!",
       });
     }
-    res.send(posts);
+    res.send({
+      nextUrl,
+      previousUrl,
+      limit,
+      offset,
+      total,
+      results: posts.map((post) => ({
+        id: post._id,
+        title: post.title,
+        text: post.text,
+        likes: post.likes,
+        comments: post.comments,
+        user: {
+          name: post.user.name,
+          username: post.user.username,
+        },
+      })),
+    });
   } catch (error) {
     res.status("500").send(error.message);
   }
 };
 
-export default { create, getAll };
+export default { create, findAll };
