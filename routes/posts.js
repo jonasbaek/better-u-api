@@ -31,5 +31,12 @@ router.delete(
   validSameUser,
   postsController.remove
 );
+router.patch(
+  "/like/:id",
+  authMiddleware,
+  validId,
+  validPost,
+  postsController.likePost
+);
 
 export default router;

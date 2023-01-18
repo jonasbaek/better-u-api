@@ -132,4 +132,27 @@ export const remove = async (req, res) => {
   }
 };
 
-export default { create, findAll, findById, findByUserId, update, remove };
+export const likePost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
+    const likedPost = await postsService.likePostService(id, userId);
+    if (!likedPost) {
+      await postsService.deleteLikePostService(id, userId);
+      return res.status(200).send({ message: "Post has been disliked!" });
+    }
+    return res.send({ message: "Post has been liked!" });
+  } catch (error) {
+    res.status("500").send(error.message);
+  }
+};
+
+export default {
+  create,
+  findAll,
+  findById,
+  findByUserId,
+  likePost,
+  remove,
+  update,
+};
