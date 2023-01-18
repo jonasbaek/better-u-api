@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
 import userService from "../services/user.js";
 import postsService from "../services/posts.js";
+import commentsService from "../services/comments.js";
 
 //middlewares são funções de interceptações, entre a rota e o callback
 
 export const validId = (req, res, next) => {
   try {
-    let id = req.params.userId || req.params.postId;
-    console.log(id);
+    let id = req.params.userId || req.params.postId || req.params.commentId;
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).send({ message: "Invalid ID" });
     }
@@ -58,6 +58,22 @@ export const validPost = async (req, res, next) => {
     }
     req.postId = postId;
     req.post = post;
+
+    next();
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};
+
+export const validComment = async (req, res, next) => {
+  try {
+    const commentId = req.params.commentId;
+    const comment = await commentsService.findByIdService(commentId);
+    if (!comment) {
+      return res.status(400).send({ message: "Comment not found" });
+    }
+    req.commentId = commentId;
+    req.comment = comment;
 
     next();
   } catch (error) {
