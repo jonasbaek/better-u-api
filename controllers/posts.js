@@ -62,6 +62,7 @@ const findAll = async (req, res) => {
         comments: post.comments,
         image: post.image,
         user: {
+          id: post.user._id,
           name: post.user.name,
           username: post.user.username,
           avatar: post.user.avatar,
@@ -112,13 +113,6 @@ const update = async (req, res) => {
       res.status(401).send({ message: "Missing fields!" });
     }
     const { id } = req.params;
-    const post = req.post;
-    const currentUser = req.user;
-    if (String(post.user._id) !== String(currentUser._id)) {
-      return res.status(400).send({
-        message: "This user is not allowed to update this post",
-      });
-    }
     await postsService.updateService(id, title, text, image);
     res.status(201).send({
       message: "Post successfully updated!",
@@ -128,4 +122,14 @@ const update = async (req, res) => {
   }
 };
 
-export default { create, findAll, findById, findByUserId, update };
+export const remove = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await postsService.removeService(id);
+    return res.send({ message: "Post deleted successfully!" });
+  } catch (error) {
+    res.status("500").send(error.message);
+  }
+};
+
+export default { create, findAll, findById, findByUserId, update, remove };

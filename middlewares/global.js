@@ -64,3 +64,18 @@ export const validPost = async (req, res, next) => {
     res.status(500).send({ message: error.message });
   }
 };
+
+export const validSameUser = async (req, res, next) => {
+  try {
+    const post = req.post;
+    const currentUser = req.user;
+    if (String(post.user._id) !== String(currentUser._id)) {
+      return res.status(400).send({
+        message: "This user is not allowed to update this post",
+      });
+    }
+    next();
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};

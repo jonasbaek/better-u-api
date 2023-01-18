@@ -1,7 +1,7 @@
 import { Router } from "express";
 import postsController from "../controllers/posts.js";
 import { authMiddleware } from "../middlewares/auth.js";
-import { validId, validPost } from "../middlewares/global.js";
+import { validId, validPost, validSameUser } from "../middlewares/global.js";
 
 const router = Router();
 
@@ -20,7 +20,16 @@ router.patch(
   authMiddleware,
   validId,
   validPost,
+  validSameUser,
   postsController.update
+);
+router.delete(
+  "/:id",
+  authMiddleware,
+  validId,
+  validPost,
+  validSameUser,
+  postsController.remove
 );
 
 export default router;
