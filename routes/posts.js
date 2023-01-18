@@ -2,15 +2,22 @@ import { Router } from "express";
 import postsController from "../controllers/posts.js";
 import { authMiddleware } from "../middlewares/auth.js";
 import { validId, validPost, validSameUser } from "../middlewares/global.js";
+import { postsPaginationMiddleware } from "../middlewares/pagination.js";
 
 const router = Router();
 
 router.post("/", authMiddleware, postsController.create);
-router.get("/", authMiddleware, postsController.findAll);
+router.get(
+  "/",
+  authMiddleware,
+  postsPaginationMiddleware,
+  postsController.findAll
+);
 router.get(
   "/user/:userId",
-  validId,
   authMiddleware,
+  validId,
+  postsPaginationMiddleware,
   postsController.findByUserId
 );
 router.get(

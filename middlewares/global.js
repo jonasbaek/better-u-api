@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import userService from "../services/user.js";
-import postService from "../services/posts.js";
+import postsService from "../services/posts.js";
 
 //middlewares são funções de interceptações, entre a rota e o callback
 
@@ -52,7 +52,7 @@ export const validUserCreation = async (req, res, next) => {
 export const validPost = async (req, res, next) => {
   try {
     const postId = req.params.postId;
-    const post = await postService.findByIdService(postId);
+    const post = await postsService.findByIdService(postId);
     if (!post) {
       return res.status(400).send({ message: "Post not found" });
     }

@@ -23,31 +23,8 @@ const create = async (req, res) => {
 
 const findAll = async (req, res) => {
   try {
-    //pagination
-    let { limit, offset } = req.query;
-    limit = Number(limit);
-    offset = Number(offset);
-    if (!limit) {
-      limit = 5;
-    }
-    if (!offset) {
-      offset = 0;
-    }
+    const { nextUrl, previousUrl, limit, offset, total } = req.pagination;
     const posts = await postsService.findAllService(limit, offset);
-    const total = await postsService.countPosts();
-    const currentUrl = req.baseUrl;
-
-    const next = offset + limit;
-    const nextUrl =
-      next < total ? `${currentUrl}?limit=${limit}&offset=${next}` : null;
-
-    const previous = offset - limit < 0 ? null : offset - limit;
-    const previousUrl =
-      previous != null
-        ? `${currentUrl}?limit=${limit}&offset=${previous}`
-        : null;
-
-    //pagination
     res.send({
       nextUrl,
       previousUrl,
@@ -85,8 +62,15 @@ const findById = async (req, res) => {
 
 const findByUserId = async (req, res) => {
   try {
+    const { nextUrl, previousUrl, limit, offset, total } = req.pagination;
+
     const posts = await postsService.findByUserIdService(req.params.userId);
     res.send({
+      nextUrl,
+      previousUrl,
+      limit,
+      offset,
+      total,
       posts: posts?.map((post) => ({
         id: post._id,
         title: post.title,
