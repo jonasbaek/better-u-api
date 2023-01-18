@@ -106,7 +106,7 @@ const update = async (req, res) => {
   }
 };
 
-export const remove = async (req, res) => {
+const remove = async (req, res) => {
   try {
     const { postId } = req.params;
     await postsService.removeService(postId);
@@ -116,7 +116,7 @@ export const remove = async (req, res) => {
   }
 };
 
-export const likePost = async (req, res) => {
+const likePost = async (req, res) => {
   try {
     const { postId } = req.params;
     const userId = req.user.id;
