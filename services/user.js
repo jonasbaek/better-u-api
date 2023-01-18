@@ -1,6 +1,7 @@
+import Comments from "../models/Comments.js";
+import Posts from "../models/Posts.js";
 import User from "../models/User.js";
 
-//User.create -> create,find, findById are from moongose
 const createService = (body) => User.create(body);
 const findAllService = () => User.find();
 const findByIdService = (userId) => User.findById(userId);
@@ -17,7 +18,13 @@ const updateService = (
     { _id: userId },
     { name, username, email, password, avatar, background }
   );
-const removeService = (userId) => User.findByIdAndDelete(userId);
+const removeService = async (userId) => {
+  await Posts.remove({ user: userId });
+  const posts = await Posts.find({ user: userId });
+  const postIds = posts.map((post) => post._id);
+  await Comments.remove({ post: { $in: postIds } });
+  await User.findByIdAndDelete(userId);
+};
 
 export default {
   createService,
