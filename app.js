@@ -9,6 +9,9 @@ import indexRouter from "./routes/index.js";
 import userRouter from "./routes/user.js";
 import authRouter from "./routes/auth.js";
 import postsRouter from "./routes/posts.js";
+import commentsRouter from "./routes/comments.js";
+
+import { validId, validPost } from "./middlewares/global.js";
 
 import { fileURLToPath } from "url";
 import { dirname } from "path";
@@ -34,6 +37,7 @@ app.use("/", indexRouter);
 app.use("/user", userRouter);
 app.use("/auth", authRouter);
 app.use("/posts", postsRouter);
+app.use("/posts/:postId/comments", validId, validPost, commentsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

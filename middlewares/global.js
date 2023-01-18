@@ -7,6 +7,7 @@ import postService from "../services/posts.js";
 export const validId = (req, res, next) => {
   try {
     let id = req.params.userId || req.params.postId;
+    console.log(id);
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).send({ message: "Invalid ID" });
     }
