@@ -6,11 +6,11 @@ import postService from "../services/posts.js";
 
 export const validId = (req, res, next) => {
   try {
-    const id = req.params.id;
+    let id = req.params.id || req.params.userId || req.params.postId;
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).send({ message: "Invalid ID" });
     }
-    next(); //serve para dar prosseguimento após o middleware ser executado
+    next();
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
