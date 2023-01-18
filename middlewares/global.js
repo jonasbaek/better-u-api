@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import userService from "../services/user.js";
+import postService from "../services/posts.js";
 
 //middlewares são funções de interceptações, entre a rota e o callback
 
@@ -9,7 +10,6 @@ export const validId = (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).send({ message: "Invalid ID" });
     }
-
     next(); //serve para dar prosseguimento após o middleware ser executado
   } catch (error) {
     res.status(500).send({ message: error.message });
@@ -43,6 +43,22 @@ export const validUserCreation = async (req, res, next) => {
       return res.status(400).send({ message: "Error creating user" });
     }
     req.user = user;
+    next();
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};
+
+export const validPost = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const post = await postService.findByIdService(id);
+    if (!post) {
+      return res.status(400).send({ message: "Post not found" });
+    }
+    req.id = id;
+    req.post = post;
+
     next();
   } catch (error) {
     res.status(500).send({ message: error.message });
