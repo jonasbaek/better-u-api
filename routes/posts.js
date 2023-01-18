@@ -1,12 +1,18 @@
 import { Router } from "express";
 import postsController from "../controllers/posts.js";
 import { authMiddleware } from "../middlewares/auth.js";
+import { createRateLimiter } from "../middlewares/rateLimit.js";
 import { validId, validPost, validSameUser } from "../middlewares/global.js";
 import { postsPaginationMiddleware } from "../middlewares/pagination.js";
 
 const router = Router();
 
-router.post("/", authMiddleware, postsController.create);
+router.post(
+  "/",
+  authMiddleware,
+  createRateLimiter(60 * 1000, 10, "Too many posts, please try again later."),
+  postsController.create
+);
 router.get(
   "/",
   authMiddleware,
