@@ -11,9 +11,10 @@ const create = async (req, res) => {
     const comment = await commentsService.createService({
       text,
       user: req.user._id,
+      post: req.post._id,
     });
     req.post.comments.push(comment);
-    await req.post.save();
+    req.post.save();
     res.sendStatus(201);
   } catch (error) {
     res.status(500).send(error.message);
@@ -23,7 +24,11 @@ const create = async (req, res) => {
 const findAll = async (req, res) => {
   try {
     const { nextUrl, previousUrl, limit, offset, total } = req.pagination;
-    const comments = await commentsService.findAllService(limit, offset);
+    const comments = await commentsService.findAllService(
+      req.postId,
+      limit,
+      offset
+    );
     res.send({
       nextUrl,
       previousUrl,
@@ -40,6 +45,7 @@ const findAll = async (req, res) => {
           username: comment.user.username,
           avatar: comment.user.avatar,
         },
+        post: comment.post,
       })),
     });
   } catch (error) {

@@ -35,6 +35,7 @@ router.patch(
   authMiddleware,
   validId,
   validComment,
+  validSameUser,
   commentsController.update
 );
 

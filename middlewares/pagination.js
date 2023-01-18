@@ -34,7 +34,7 @@ export const commentsPaginationMiddleware = async (req, res, next) => {
   if (!offset) {
     offset = 0;
   }
-  const total = await commentsService.countComments();
+  const total = await commentsService.countComments(req.postId);
   const currentUrl = req.baseUrl;
   const nextPage = offset + limit;
   const nextUrl =
