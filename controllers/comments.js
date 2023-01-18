@@ -11,7 +11,6 @@ const create = async (req, res) => {
     const comment = await commentsService.createService({
       text,
       user: req.user._id,
-      post: req.postId,
     });
     req.post.comments.push(comment);
     await req.post.save();
@@ -21,4 +20,31 @@ const create = async (req, res) => {
   }
 };
 
-export default { create };
+const findAll = async (req, res) => {
+  try {
+    const { nextUrl, previousUrl, limit, offset, total } = req.pagination;
+    const comments = await commentsService.findAllService(limit, offset);
+    res.send({
+      nextUrl,
+      previousUrl,
+      limit,
+      offset,
+      total,
+      comments: comments?.map((comment) => ({
+        id: comment._id,
+        text: comment.text,
+        likes: comment.likes,
+        user: {
+          id: comment.user._id,
+          name: comment.user.name,
+          username: comment.user.username,
+          avatar: comment.user.avatar,
+        },
+      })),
+    });
+  } catch (error) {
+    res.status("500").send(error.message);
+  }
+};
+
+export default { create, findAll };
