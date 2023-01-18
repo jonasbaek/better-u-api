@@ -47,4 +47,29 @@ const findAll = async (req, res) => {
   }
 };
 
-export default { create, findAll };
+const findById = async (req, res) => {
+  try {
+    const comment = req.comment;
+    res.send(comment);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};
+
+const update = async (req, res) => {
+  try {
+    const { text } = req.body;
+    if (!text) {
+      res.status(401).send({ message: "Missing fields!" });
+    }
+    const { commentId } = req.params;
+    await commentsService.updateService(commentId, text);
+    res.status(201).send({
+      message: "Post successfully updated!",
+    });
+  } catch (error) {
+    res.status("500").send(error.message);
+  }
+};
+
+export default { create, findAll, findById, update };
