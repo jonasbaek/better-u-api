@@ -3,7 +3,11 @@ import commentsController from "../controllers/comments.js";
 import { authMiddleware } from "../middlewares/auth.js";
 import { createRateLimiter } from "../middlewares/rateLimit.js";
 import { commentsPaginationMiddleware } from "../middlewares/pagination.js";
-import { validId, validComment, validSameUser } from "../middlewares/global.js";
+import {
+  validId,
+  validComment,
+  validSameCommentUser,
+} from "../middlewares/global.js";
 
 const router = Router();
 
@@ -35,8 +39,16 @@ router.patch(
   authMiddleware,
   validId,
   validComment,
-  validSameUser,
+  validSameCommentUser,
   commentsController.update
+);
+router.delete(
+  "/:commentId",
+  authMiddleware,
+  validId,
+  validComment,
+  validSameCommentUser,
+  commentsController.remove
 );
 
 export default router;

@@ -2,7 +2,11 @@ import { Router } from "express";
 import postsController from "../controllers/posts.js";
 import { authMiddleware } from "../middlewares/auth.js";
 import { createRateLimiter } from "../middlewares/rateLimit.js";
-import { validId, validPost, validSameUser } from "../middlewares/global.js";
+import {
+  validId,
+  validPost,
+  validSamePostUser,
+} from "../middlewares/global.js";
 import { postsPaginationMiddleware } from "../middlewares/pagination.js";
 
 const router = Router();
@@ -38,7 +42,7 @@ router.patch(
   authMiddleware,
   validId,
   validPost,
-  validSameUser,
+  validSamePostUser,
   postsController.update
 );
 router.delete(
@@ -46,7 +50,7 @@ router.delete(
   authMiddleware,
   validId,
   validPost,
-  validSameUser,
+  validSamePostUser,
   postsController.remove
 );
 router.patch(

@@ -25,7 +25,6 @@ const PostsSchema = new mongoose.Schema({
       user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-        required: true,
       },
       createdAt: {
         type: Date,
@@ -35,19 +34,9 @@ const PostsSchema = new mongoose.Schema({
   ],
   comments: [
     {
-      user: {
+      comment: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
-      },
-      text: {
-        type: String,
-        required: true,
-        maxlength: [1000, "Comment text must be less than 1000 characters"],
-      },
-      createdAt: {
-        type: Date,
-        default: Date.now(),
+        ref: "Comments",
       },
     },
   ],

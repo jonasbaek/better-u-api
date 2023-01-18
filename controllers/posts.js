@@ -8,13 +8,11 @@ const create = async (req, res) => {
         message: "Submit all fields for registration",
       });
     }
-    const post = await postsService.createService({
+    await postsService.createService({
       title,
       text,
       user: req.user._id,
     });
-    req.user.posts.push(post);
-    await req.user.save();
     res.sendStatus(201);
   } catch (error) {
     res.status(500).send(error.message);
@@ -109,7 +107,7 @@ const update = async (req, res) => {
 const remove = async (req, res) => {
   try {
     const { postId } = req.params;
-    await postsService.removeService(postId);
+    await postsService.removeService(req.user._id, postId);
     return res.send({ message: "Post deleted successfully!" });
   } catch (error) {
     res.status("500").send(error.message);

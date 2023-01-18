@@ -80,17 +80,28 @@ export const validComment = async (req, res, next) => {
   }
 };
 
-export const validSameUser = async (req, res, next) => {
+export const validSamePostUser = async (req, res, next) => {
   try {
     const post = req.post;
+    const currentUser = req.user;
+    if (String(post.user._id) !== String(currentUser._id)) {
+      return res.status(400).send({
+        message: "This user is not allowed to make this action!",
+      });
+    }
+    next();
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};
+
+export const validSameCommentUser = async (req, res, next) => {
+  try {
     const comment = req?.comment;
     const currentUser = req.user;
-    if (
-      String(post.user._id) !== String(currentUser._id) ||
-      String(comment.user._id) !== String(currentUser._id)
-    ) {
+    if (String(comment.user._id) !== String(currentUser._id)) {
       return res.status(400).send({
-        message: "This user is not allowed to update this post",
+        message: "This user is not allowed to make this action!",
       });
     }
     next();

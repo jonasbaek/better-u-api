@@ -8,13 +8,11 @@ const create = async (req, res) => {
         message: "Missing text field!",
       });
     }
-    const comment = await commentsService.createService({
+    await commentsService.createService({
       text,
       user: req.user._id,
       post: req.post._id,
     });
-    req.post.comments.push(comment);
-    req.post.save();
     res.sendStatus(201);
   } catch (error) {
     res.status(500).send(error.message);
@@ -78,4 +76,15 @@ const update = async (req, res) => {
   }
 };
 
-export default { create, findAll, findById, update };
+const remove = async (req, res) => {
+  try {
+    const { commentId } = req.params;
+    const { postId } = req;
+    await commentsService.removeService(postId, commentId);
+    return res.send({ message: "Comment deleted successfully!" });
+  } catch (error) {
+    res.status("500").send(error.message);
+  }
+};
+
+export default { create, findAll, findById, update, remove };

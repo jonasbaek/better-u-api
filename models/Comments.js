@@ -18,7 +18,6 @@ const CommentSchema = new mongoose.Schema({
   post: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Posts",
-    required: true,
   },
 
   likes: [
@@ -26,7 +25,6 @@ const CommentSchema = new mongoose.Schema({
       user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-        required: true,
       },
       createdAt: {
         type: Date,
@@ -35,6 +33,7 @@ const CommentSchema = new mongoose.Schema({
     },
   ],
 });
-const Comment = mongoose.model("Comment", CommentSchema);
 
-export default Comment;
+const Comments = mongoose.model("Comments", CommentSchema);
+
+export default Comments;
