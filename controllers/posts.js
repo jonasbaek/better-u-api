@@ -85,7 +85,7 @@ const findById = async (req, res) => {
 
 const findByUserId = async (req, res) => {
   try {
-    const posts = await postsService.findByUserIdService(req.params.id);
+    const posts = await postsService.findByUserIdService(req.params.userId);
     res.send({
       posts: posts?.map((post) => ({
         id: post._id,
