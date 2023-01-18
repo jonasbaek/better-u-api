@@ -3,9 +3,9 @@ import User from "../models/User.js";
 //User.create -> create,find, findById are from moongose
 const createService = (body) => User.create(body);
 const findAllService = () => User.find();
-const findByIdService = (id) => User.findById(id);
+const findByIdService = (userId) => User.findById(userId);
 const updateService = (
-  id,
+  userId,
   name,
   username,
   email,
@@ -14,7 +14,7 @@ const updateService = (
   background
 ) =>
   User.findOneAndUpdate(
-    { _id: id },
+    { _id: userId },
     { name, username, email, password, avatar, background }
   );
 

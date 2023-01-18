@@ -46,10 +46,10 @@ const update = async (req, res) => {
     if (!name && !username && !email && !password) {
       res.status(401).send({ error: "Submit at least one field for update" });
     }
-    const { id, user } = req;
+    const { userId } = req;
 
     await userService.updateService(
-      id,
+      userId,
       name,
       username,
       email,

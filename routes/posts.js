@@ -14,14 +14,14 @@ router.get(
   postsController.findByUserId
 );
 router.get(
-  "/:id",
+  "/:postId",
   authMiddleware,
   validId,
   validPost,
   postsController.findById
 );
 router.patch(
-  "/:id",
+  "/:postId",
   authMiddleware,
   validId,
   validPost,
@@ -29,7 +29,7 @@ router.patch(
   postsController.update
 );
 router.delete(
-  "/:id",
+  "/:postId",
   authMiddleware,
   validId,
   validPost,
@@ -37,7 +37,7 @@ router.delete(
   postsController.remove
 );
 router.patch(
-  "/like/:id",
+  "/like/:postId",
   authMiddleware,
   validId,
   validPost,

@@ -3,11 +3,12 @@ import Posts from "../models/Posts.js";
 const createService = (body) => Posts.create(body);
 const findAllService = (limit, offset) =>
   Posts.find().sort({ _id: -1 }).skip(offset).limit(limit).populate("user");
-const findByIdService = (id) => Posts.findById(id).populate("user");
-const findByUserIdService = (id) => Posts.find({ user: id }).populate("user");
-const updateService = (id, title, text, image) =>
-  Posts.findOneAndUpdate({ _id: id }, { title, text, image });
-const removeService = (id) => Posts.findByIdAndDelete(id);
+const findByIdService = (postId) => Posts.findById(postId).populate("user");
+const findByUserIdService = (userId) =>
+  Posts.find({ user: userId }).populate("user");
+const updateService = (postId, title, text, image) =>
+  Posts.findOneAndUpdate({ _id: postId }, { title, text, image });
+const removeService = (postId) => Posts.findByIdAndDelete(postId);
 const likePostService = (postId, userId) =>
   Posts.findOneAndUpdate(
     { _id: postId, "likes.user": { $nin: [userId] } },

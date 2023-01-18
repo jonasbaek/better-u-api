@@ -112,8 +112,8 @@ const update = async (req, res) => {
     if (!title || !text) {
       res.status(401).send({ message: "Missing fields!" });
     }
-    const { id } = req.params;
-    await postsService.updateService(id, title, text, image);
+    const { postId } = req.params;
+    await postsService.updateService(postId, title, text, image);
     res.status(201).send({
       message: "Post successfully updated!",
     });
@@ -124,8 +124,8 @@ const update = async (req, res) => {
 
 export const remove = async (req, res) => {
   try {
-    const { id } = req.params;
-    await postsService.removeService(id);
+    const { postId } = req.params;
+    await postsService.removeService(postId);
     return res.send({ message: "Post deleted successfully!" });
   } catch (error) {
     res.status("500").send(error.message);
@@ -134,9 +134,9 @@ export const remove = async (req, res) => {
 
 export const likePost = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { postId } = req.params;
     const userId = req.user.id;
-    const likedPost = await postsService.likePostService(id, userId);
+    const likedPost = await postsService.likePostService(postId, userId);
     if (!likedPost) {
       await postsService.deleteLikePostService(id, userId);
       return res.status(200).send({ message: "Post has been disliked!" });

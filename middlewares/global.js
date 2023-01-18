@@ -6,7 +6,7 @@ import postService from "../services/posts.js";
 
 export const validId = (req, res, next) => {
   try {
-    let id = req.params.id || req.params.userId || req.params.postId;
+    let id = req.params.userId || req.params.postId;
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).send({ message: "Invalid ID" });
     }
@@ -18,14 +18,13 @@ export const validId = (req, res, next) => {
 
 export const validUser = async (req, res, next) => {
   try {
-    const id = req.params.id;
+    const id = req.params.userId;
     const user = await userService.findByIdService(id);
     if (!user) {
       return res.status(400).send({ message: "User not found" });
     }
-    req.id = id;
+    req.userId = id;
     req.user = user;
-
     next();
   } catch (error) {
     res.status(500).send({ message: error.message });
@@ -51,12 +50,12 @@ export const validUserCreation = async (req, res, next) => {
 
 export const validPost = async (req, res, next) => {
   try {
-    const id = req.params.id;
-    const post = await postService.findByIdService(id);
+    const postId = req.params.postId;
+    const post = await postService.findByIdService(postId);
     if (!post) {
       return res.status(400).send({ message: "Post not found" });
     }
-    req.id = id;
+    req.postId = postId;
     req.post = post;
 
     next();
