@@ -20,25 +20,37 @@ const PostsSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  likes: {
-    type: Array,
-    required: true,
-  },
-  comments: {
-    user: {
-      type: Array,
-      required: true,
+  likes: [
+    {
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+      },
+      createdAt: {
+        type: Date,
+        default: Date.now(),
+      },
     },
-    text: {
-      type: String,
-      required: true,
-      maxlength: [1000, "Comment text must be less than 1000 characters"],
+  ],
+  comments: [
+    {
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+      },
+      text: {
+        type: String,
+        required: true,
+        maxlength: [1000, "Comment text must be less than 1000 characters"],
+      },
+      createdAt: {
+        type: Date,
+        default: Date.now(),
+      },
     },
-    createdAt: {
-      type: Date,
-      default: Date.now(),
-    },
-  },
+  ],
   image: {
     type: String,
   },

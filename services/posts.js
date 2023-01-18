@@ -10,11 +10,14 @@ const updateService = (id, title, text, image) =>
 const removeService = (id) => Posts.findByIdAndDelete(id);
 const likePostService = (postId, userId) =>
   Posts.findOneAndUpdate(
-    { _id: postId, "likes.userId": { $nin: [userId] } },
-    { $push: { likes: { userId, createdAt: new Date() } } }
+    { _id: postId, "likes.user": { $nin: [userId] } },
+    { $push: { likes: { user: userId } } }
   );
 const deleteLikePostService = (postId, userId) =>
-  Posts.findOneAndUpdate({ _id: postId }, { $pull: { likes: { userId } } });
+  Posts.findOneAndUpdate(
+    { _id: postId },
+    { $pull: { likes: { user: userId } } }
+  );
 const countPosts = () => Posts.countDocuments();
 
 export default {
