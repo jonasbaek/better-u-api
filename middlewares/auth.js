@@ -20,7 +20,7 @@ export const authMiddleware = async (req, res, next) => {
       if (!user || !user.id) {
         return res.status(401).send({ message: "Invalid token!" });
       }
-      req.user = user;
+      req.currentUser = user;
       return next();
     });
   } catch (error) {

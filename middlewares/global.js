@@ -109,3 +109,18 @@ export const validSameCommentUser = async (req, res, next) => {
     res.status(500).send({ message: error.message });
   }
 };
+
+export const validUserRemoveAccount = async (req, res, next) => {
+  try {
+    const currentUser = req.currentUser; //getting from auth middleware
+    console.log(currentUser);
+    if (String(req.params.userId) !== String(currentUser._id)) {
+      return res.status(400).send({
+        message: "This user is not allowed to make this action!",
+      });
+    }
+    next();
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};

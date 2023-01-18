@@ -17,10 +17,12 @@ const updateService = (
     { _id: userId },
     { name, username, email, password, avatar, background }
   );
+const removeService = (userId) => User.findByIdAndDelete(userId);
 
 export default {
   createService,
   findAllService,
   findByIdService,
+  removeService,
   updateService,
 };

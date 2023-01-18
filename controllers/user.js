@@ -66,4 +66,13 @@ const update = async (req, res) => {
   }
 };
 
-export default { create, findAll, findById, update };
+const remove = async (req, res) => {
+  try {
+    await userService.removeService(req.params.userId);
+    return res.send({ message: "User deleted successfully!" });
+  } catch (error) {
+    res.status("500").send(error.message);
+  }
+};
+
+export default { create, findAll, findById, remove, update };
