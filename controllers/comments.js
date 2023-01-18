@@ -10,7 +10,7 @@ const create = async (req, res) => {
     }
     await commentsService.createService({
       text,
-      user: req.user._id,
+      user: req.currentUser._id,
       post: req.post._id,
     });
     res.sendStatus(201);

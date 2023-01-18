@@ -11,7 +11,7 @@ const create = async (req, res) => {
     await postsService.createService({
       title,
       text,
-      user: req.user._id,
+      user: req.currentUser._id,
     });
     res.sendStatus(201);
   } catch (error) {
@@ -107,7 +107,7 @@ const update = async (req, res) => {
 const remove = async (req, res) => {
   try {
     const { postId } = req.params;
-    await postsService.removeService(req.user._id, postId);
+    await postsService.removeService(req.currentUser._id, postId);
     return res.send({ message: "Post deleted successfully!" });
   } catch (error) {
     res.status("500").send(error.message);
@@ -117,10 +117,12 @@ const remove = async (req, res) => {
 const likePost = async (req, res) => {
   try {
     const { postId } = req.params;
-    const userId = req.user.id;
-    const likedPost = await postsService.likePostService(postId, userId);
+    const likedPost = await postsService.likePostService(
+      postId,
+      req.currentUser._id
+    );
     if (!likedPost) {
-      await postsService.deleteLikePostService(id, userId);
+      await postsService.deleteLikePostService(id, req.currentUser._id);
       return res.status(200).send({ message: "Post has been disliked!" });
     }
     return res.send({ message: "Post has been liked!" });

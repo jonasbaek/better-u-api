@@ -83,7 +83,7 @@ export const validComment = async (req, res, next) => {
 export const validSamePostUser = async (req, res, next) => {
   try {
     const post = req.post;
-    const currentUser = req.user;
+    const currentUser = req.currentUser;
     if (String(post.user._id) !== String(currentUser._id)) {
       return res.status(400).send({
         message: "This user is not allowed to make this action!",
@@ -98,7 +98,7 @@ export const validSamePostUser = async (req, res, next) => {
 export const validSameCommentUser = async (req, res, next) => {
   try {
     const comment = req?.comment;
-    const currentUser = req.user;
+    const currentUser = req.currentUser;
     if (String(comment.user._id) !== String(currentUser._id)) {
       return res.status(400).send({
         message: "This user is not allowed to make this action!",
@@ -112,7 +112,7 @@ export const validSameCommentUser = async (req, res, next) => {
 
 export const validUserRemoveAccount = async (req, res, next) => {
   try {
-    const currentUser = req.currentUser; //getting from auth middleware
+    const currentUser = req.currentUser;
     console.log(currentUser);
     if (String(req.params.userId) !== String(currentUser._id)) {
       return res.status(400).send({
