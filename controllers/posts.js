@@ -2,15 +2,15 @@ import postsService from "../services/posts.js";
 
 const create = async (req, res) => {
   try {
-    const { title, text } = req.body;
-    if (!title || !text) {
+    const { text, image } = req.body;
+    if (!text) {
       res.status(400).send({
         message: "Submit all fields for registration",
       });
     }
     await postsService.createService({
-      title,
       text,
+      image,
       user: req.currentUser._id,
     });
     res.sendStatus(201);
@@ -31,7 +31,6 @@ const findAll = async (req, res) => {
       total,
       posts: posts?.map((post) => ({
         id: post._id,
-        title: post.title,
         text: post.text,
         likes: post.likes,
         comments: post.comments,
@@ -71,7 +70,6 @@ const findByUserId = async (req, res) => {
       total,
       posts: posts?.map((post) => ({
         id: post._id,
-        title: post.title,
         text: post.text,
         likes: post.likes,
         comments: post.comments,
@@ -90,12 +88,12 @@ const findByUserId = async (req, res) => {
 
 const update = async (req, res) => {
   try {
-    const { title, text, image } = req.body;
-    if (!title || !text) {
+    const { text, image } = req.body;
+    if (!text) {
       res.status(401).send({ message: "Missing fields!" });
     }
     const { postId } = req.params;
-    await postsService.updateService(postId, title, text, image);
+    await postsService.updateService(postId, text, image);
     res.status(201).send({
       message: "Post successfully updated!",
     });
