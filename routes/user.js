@@ -12,6 +12,9 @@ const router = Router();
 
 router.post("/", validUserCreation, userController.create);
 router.get("/", userController.findAll);
+router.get("/me", authMiddleware, (req, res) => {
+  return res.json(req.currentUser);
+});
 router.get("/:userId", validId, validUser, userController.findById);
 router.patch("/:userId", validId, validUser, userController.update);
 router.delete(
