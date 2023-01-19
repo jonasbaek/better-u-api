@@ -4,6 +4,7 @@ import connectDatabase from "./database/db.js";
 import express from "express";
 import logger from "morgan";
 import path from "path";
+import cors from "cors";
 
 import indexRouter from "./routes/index.js";
 import userRouter from "./routes/user.js";
@@ -26,6 +27,7 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
 connectDatabase();
+app.use(cors());
 
 app.use(logger("dev"));
 app.use(express.json());
