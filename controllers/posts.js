@@ -31,6 +31,7 @@ const findAll = async (req, res) => {
       total,
       posts: posts?.map((post) => ({
         id: post._id,
+        createdAt: post.createdAt,
         text: post.text,
         likes: post.likes,
         comments: post.comments,
