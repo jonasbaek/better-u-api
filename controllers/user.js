@@ -69,10 +69,30 @@ const update = async (req, res) => {
 const remove = async (req, res) => {
   try {
     await userService.removeService(req.params.userId);
-    return res.send({ message: "User deleted successfully!" });
+    res.send({ message: "User deleted successfully!" });
   } catch (error) {
     res.status("500").send(error.message);
   }
 };
 
-export default { create, findAll, findById, remove, update };
+const addFriend = async (req, res) => {
+  try {
+    const addFriend = await userService.addFriendService(
+      req.currentUser.id,
+      req.userId
+    );
+    console.log(addFriend);
+    if (!addFriend) {
+      await userService.deleteFriendService(req.currentUser.id, req.userId);
+      return res.status(200).send({ message: "Unfriended!" });
+    }
+    return res.status(201).send({
+      message: "Friend successfully added!",
+    });
+  } catch (error) {
+    console.log(error.message);
+    return res.status("500").send(error.message);
+  }
+};
+
+export default { addFriend, create, findAll, findById, remove, update };

@@ -113,7 +113,6 @@ export const validSameCommentUser = async (req, res, next) => {
 export const validUserRemoveAccount = async (req, res, next) => {
   try {
     const currentUser = req.currentUser;
-    console.log(currentUser);
     if (String(req.params.userId) !== String(currentUser._id)) {
       return res.status(400).send({
         message: "This user is not allowed to make this action!",

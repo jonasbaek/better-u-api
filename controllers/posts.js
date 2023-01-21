@@ -41,6 +41,7 @@ const findAll = async (req, res) => {
           name: post.user.name,
           username: post.user.username,
           avatar: post.user.avatar,
+          friends: post.user.friends,
         },
       })),
     });
