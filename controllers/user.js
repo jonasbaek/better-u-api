@@ -40,6 +40,19 @@ const findById = async (req, res) => {
   }
 };
 
+const findByName = async (req, res) => {
+  try {
+    const { name } = req.params;
+    if (!name) {
+      res.status(401).send({ message: "Field is missing" });
+    }
+    const user = await userService.findByName(name);
+    res.send(user);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};
+
 const update = async (req, res) => {
   try {
     const { name, username, email, password, avatar, background } = req.body;
@@ -95,4 +108,12 @@ const addFriend = async (req, res) => {
   }
 };
 
-export default { addFriend, create, findAll, findById, remove, update };
+export default {
+  addFriend,
+  create,
+  findAll,
+  findByName,
+  findById,
+  remove,
+  update,
+};

@@ -4,6 +4,8 @@ import User from "../models/User.js";
 
 const createService = (body) => User.create(body);
 const findAllService = () => User.find().populate("friends.user");
+const findByName = (name) =>
+  User.find({ name: { $regex: name, $options: "i" } });
 const findByIdService = (userId) =>
   User.findById(userId).populate("friends.user");
 const updateService = (
@@ -61,6 +63,7 @@ export default {
   createService,
   deleteFriendService,
   findAllService,
+  findByName,
   findByIdService,
   removeService,
   updateService,

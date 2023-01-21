@@ -15,6 +15,7 @@ router.get("/", authMiddleware, userController.findAll);
 router.get("/me", authMiddleware, (req, res) => {
   return res.json(req.currentUser);
 });
+router.get("/:name", authMiddleware, userController.findByName);
 router.get(
   "/:userId",
   authMiddleware,
