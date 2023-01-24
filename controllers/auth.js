@@ -19,4 +19,8 @@ const login = async (req, res) => {
   }
 };
 
-export { login };
+const validate = (req, res) => {
+  return res.status(200).send({ message: "Valid token!" });
+};
+
+export { login, validate };
