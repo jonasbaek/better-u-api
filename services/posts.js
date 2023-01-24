@@ -26,16 +26,31 @@ const removeService = async (userId, postId) => {
   });
   await Posts.findByIdAndDelete(postId);
 };
-const likePostService = (postId, userId) =>
-  Posts.findOneAndUpdate(
+const likePostService = async (postId, userId) => {
+  const updatePostLike = await Posts.findOneAndUpdate(
     { _id: postId, "likes.user": { $nin: [userId] } },
     { $push: { likes: { user: userId } } }
   );
-const deleteLikePostService = (postId, userId) =>
-  Posts.findOneAndUpdate(
+  if (updatePostLike) {
+    return await User.findOneAndUpdate(
+      { _id: userId, "likes.post": { $nin: [postId] } },
+      { $push: { likes: { post: postId } } }
+    );
+  }
+};
+const deleteLikePostService = async (postId, userId) => {
+  const deletePostLike = await Posts.findOneAndUpdate(
     { _id: postId },
     { $pull: { likes: { user: userId } } }
   );
+  if (deletePostLike) {
+    return await User.findOneAndUpdate(
+      { _id: userId },
+      { $pull: { likes: { post: postId } } }
+    );
+  }
+};
+
 const countPosts = () => Posts.countDocuments();
 
 export default {

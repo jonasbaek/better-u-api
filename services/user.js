@@ -7,7 +7,7 @@ const findAllService = () => User.find().populate("friends.user");
 const findByName = (name) =>
   User.find({ name: { $regex: name, $options: "i" } });
 const findByIdService = (userId) =>
-  User.findById(userId).populate("friends.user");
+  User.findById(userId).populate("friends.user").populate("likes");
 const updateService = (
   userId,
   name,
