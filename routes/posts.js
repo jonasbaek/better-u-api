@@ -54,7 +54,7 @@ router.delete(
   postsController.remove
 );
 router.patch(
-  "/like/:postId",
+  "/:postId/like",
   authMiddleware,
   validId,
   validPost,

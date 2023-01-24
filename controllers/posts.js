@@ -122,9 +122,10 @@ const likePost = async (req, res) => {
       req.currentUser._id
     );
     if (!likedPost) {
-      await postsService.deleteLikePostService(id, req.currentUser._id);
+      await postsService.deleteLikePostService(postId, req.currentUser._id);
       return res.status(200).send({ message: "Post has been disliked!" });
     }
+
     return res.send({ message: "Post has been liked!" });
   } catch (error) {
     res.status("500").send(error.message);
