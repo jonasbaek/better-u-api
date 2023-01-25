@@ -21,13 +21,11 @@ const create = async (req, res) => {
 
 const findAll = async (req, res) => {
   try {
-    const { nextUrl, previousUrl, limit, offset, total } = req.pagination;
-    const posts = await postsService.findAllService(limit, offset);
+    const { nextUrl, limit, total } = req.pagination;
+    const posts = await postsService.findAllService(limit);
     res.send({
       nextUrl,
-      previousUrl,
       limit,
-      offset,
       total,
       posts: posts?.map((post) => ({
         id: post._id,

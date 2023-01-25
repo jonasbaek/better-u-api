@@ -7,10 +7,9 @@ const createService = async (body) => {
     $push: { posts: post },
   });
 };
-const findAllService = (limit, offset) =>
+const findAllService = (limit) =>
   Posts.find()
     .sort({ _id: -1 })
-    .skip(offset)
     .limit(limit)
     .populate("user")
     .populate("comments");
