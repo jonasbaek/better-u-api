@@ -3,8 +3,6 @@ import userService from "../services/user.js";
 import postsService from "../services/posts.js";
 import commentsService from "../services/comments.js";
 
-//middlewares são funções de interceptações, entre a rota e o callback
-
 export const validId = (req, res, next) => {
   try {
     let id = req.params.userId || req.params.postId || req.params.commentId;
