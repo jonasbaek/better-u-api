@@ -107,12 +107,18 @@ const update = async (req, res) => {
 const remove = async (req, res) => {
   try {
     const { postId } = req.params;
-
+    const { image } = req.post;
+    if (image) {
+      fs.unlink(`public/uploads/${image}`, (error) => {
+        if (error) {
+          return res.status(500).send({ message: error.message });
+        }
+      });
+    }
     await postsService.removeService(req.currentUser._id, postId);
-
     return res.send({ message: "Post deleted successfully!" });
   } catch (error) {
-    res.status("500").send(error.message);
+    return res.status("500").send(error.message);
   }
 };
 
