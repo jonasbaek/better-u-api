@@ -1,8 +1,9 @@
 import postsService from "../services/posts.js";
+import fs from "fs";
 
 const create = async (req, res) => {
   try {
-    const { text, image } = req.body;
+    const { text } = req.body;
     if (!text) {
       res.status(400).send({
         message: "Submit all fields for registration",
@@ -10,7 +11,7 @@ const create = async (req, res) => {
     }
     await postsService.createService({
       text,
-      image,
+      image: req.file ? req.file.filename : null,
       user: req.currentUser._id,
     });
     res.sendStatus(201);
@@ -44,6 +45,7 @@ const findAll = async (req, res) => {
       })),
     });
   } catch (error) {
+    console.log(error);
     res.status("500").send(error.message);
   }
 };
@@ -105,7 +107,9 @@ const update = async (req, res) => {
 const remove = async (req, res) => {
   try {
     const { postId } = req.params;
+
     await postsService.removeService(req.currentUser._id, postId);
+
     return res.send({ message: "Post deleted successfully!" });
   } catch (error) {
     res.status("500").send(error.message);

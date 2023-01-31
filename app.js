@@ -1,3 +1,4 @@
+import bodyParser from "body-parser";
 import createError from "http-errors";
 import cookieParser from "cookie-parser";
 import connectDatabase from "./database/db.js";
@@ -21,7 +22,7 @@ import "dotenv/config";
 const app = express();
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+export const __dirname = dirname(__filename);
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
@@ -34,12 +35,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+app.use(bodyParser.json({ limit: "30mb", extended: true }));
+app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 
 app.use("/", indexRouter);
 app.use("/user", userRouter);
 app.use("/auth", authRouter);
 app.use("/posts", postsRouter);
 app.use("/posts/:postId/comments", validId, validPost, commentsRouter);
+app.use(
+  "/public/uploads",
+  express.static(path.join(__dirname, "/public/uploads"))
+);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

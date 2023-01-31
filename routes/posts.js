@@ -8,6 +8,7 @@ import {
   validSamePostUser,
 } from "../middlewares/global.js";
 import { postsPaginationMiddleware } from "../middlewares/pagination.js";
+import { upload } from "../middlewares/uploadImage.js";
 
 const router = Router();
 
@@ -15,6 +16,7 @@ router.post(
   "/",
   authMiddleware,
   createRateLimiter(60 * 1000, 10, "Too many posts, please try again later."),
+  upload.single("image"),
   postsController.create
 );
 router.get(
