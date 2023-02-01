@@ -7,6 +7,7 @@ import {
   validUserRemoveAccount,
 } from "../middlewares/global.js";
 import { authMiddleware } from "../middlewares/auth.js";
+import { upload } from "../middlewares/uploadAvatarsImage.js";
 
 const router = Router();
 
@@ -28,6 +29,7 @@ router.patch(
   authMiddleware,
   validId,
   validUser,
+  upload.single("image"),
   userController.update
 );
 router.patch(

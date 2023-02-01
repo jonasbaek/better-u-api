@@ -8,7 +8,7 @@ import {
   validSamePostUser,
 } from "../middlewares/global.js";
 import { postsPaginationMiddleware } from "../middlewares/pagination.js";
-import { upload } from "../middlewares/uploadImage.js";
+import { upload } from "../middlewares/uploadPostsImage.js";
 
 const router = Router();
 

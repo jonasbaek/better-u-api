@@ -1,4 +1,5 @@
 import userService from "../services/user.js";
+import fs from "fs";
 
 const create = async (req, res) => {
   try {
@@ -54,25 +55,39 @@ const findByName = async (req, res) => {
 
 const update = async (req, res) => {
   try {
-    const { name, email, password, avatar, description } = req.body;
-    if (!name && !email && !password && !description) {
+    const { name, password, image, description } = req.body;
+    if (!name && !password && !description && !image) {
       res.status(401).send({ error: "Submit at least one field for update" });
     }
-    const { userId } = req;
-
+    const { userId, user } = req;
+    console.log(req.file);
+    if (req.file && user?.avatar) {
+      fs.unlink(`public/uploads/avatars/${user.avatar}`, (error) => {
+        if (error) {
+          return res.status(500).send({ message: error.message });
+        }
+      });
+    }
+    const defineAvatar = () => {
+      if (req.file) {
+        return req.file.filename;
+      } else if (user.avatar) {
+        return user.avatar;
+      }
+      return null;
+    };
     await userService.updateService(
       userId,
       name,
-      email,
       password,
-      avatar,
+      defineAvatar(),
       description
     );
-
     res.status(201).send({
       message: "User successfully updated!",
     });
   } catch (error) {
+    console.log(error);
     res.status(500).send({ message: error.message });
   }
 };
@@ -92,7 +107,6 @@ const addFriend = async (req, res) => {
       req.currentUser.id,
       req.userId
     );
-    console.log(addFriend);
     if (!addFriend) {
       await userService.deleteFriendService(req.currentUser.id, req.userId);
       return res.status(200).send({ message: "Unfriended!" });
@@ -101,7 +115,6 @@ const addFriend = async (req, res) => {
       message: "Friend successfully added!",
     });
   } catch (error) {
-    console.log(error.message);
     return res.status("500").send(error.message);
   }
 };

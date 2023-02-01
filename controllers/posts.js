@@ -108,7 +108,7 @@ const remove = async (req, res) => {
     const { postId } = req.params;
     const { image } = req.post;
     if (image) {
-      fs.unlink(`public/uploads/${image}`, (error) => {
+      fs.unlink(`public/uploads/posts/${image}`, (error) => {
         if (error) {
           return res.status(500).send({ message: error.message });
         }

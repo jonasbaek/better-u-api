@@ -8,10 +8,10 @@ const findByName = (name) =>
   User.find({ name: { $regex: name, $options: "i" } });
 const findByIdService = (userId) =>
   User.findById(userId).populate("friends.user").populate("likes");
-const updateService = (userId, name, email, password, avatar, description) =>
+const updateService = (userId, name, password, avatar, description) =>
   User.findOneAndUpdate(
     { _id: userId },
-    { name, email, password, avatar, description }
+    { name, password, avatar, description }
   );
 
 const addFriendService = async (currentUserId, friendId) => {
