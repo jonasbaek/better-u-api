@@ -38,7 +38,7 @@ const findAll = async (req, res) => {
         user: {
           id: post.user._id,
           name: post.user.name,
-          username: post.user.username,
+          description: post.user.description,
           avatar: post.user.avatar,
           friends: post.user.friends,
         },
@@ -78,7 +78,6 @@ const findByUserId = async (req, res) => {
         image: post.image,
         user: {
           name: post.user.name,
-          username: post.user.username,
           avatar: post.user.avatar,
         },
       })),

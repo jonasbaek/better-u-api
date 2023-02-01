@@ -2,15 +2,14 @@ import userService from "../services/user.js";
 
 const create = async (req, res) => {
   try {
-    const { name, username, email, avatar, background } = req.body;
+    const { name, email, avatar, description } = req.body;
     res.status(201).send({
       user: {
         id: req.user._id,
         name,
-        username,
         email,
         avatar,
-        background,
+        description,
       },
       message: "User successfully created!",
     });
@@ -55,8 +54,8 @@ const findByName = async (req, res) => {
 
 const update = async (req, res) => {
   try {
-    const { name, username, email, password, avatar, background } = req.body;
-    if (!name && !username && !email && !password) {
+    const { name, email, password, avatar, description } = req.body;
+    if (!name && !email && !password && !description) {
       res.status(401).send({ error: "Submit at least one field for update" });
     }
     const { userId } = req;
@@ -64,11 +63,10 @@ const update = async (req, res) => {
     await userService.updateService(
       userId,
       name,
-      username,
       email,
       password,
       avatar,
-      background
+      description
     );
 
     res.status(201).send({

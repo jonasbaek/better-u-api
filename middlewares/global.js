@@ -32,8 +32,8 @@ export const validUser = async (req, res, next) => {
 
 export const validUserCreation = async (req, res, next) => {
   try {
-    const { name, username, email, password } = req.body;
-    if (!name || !username || !email || !password) {
+    const { name, email, password } = req.body;
+    if (!name || !email || !password) {
       res.status(401).send({ error: "Submit all fields for registration" });
     }
     const user = await userService.createService(req.body);

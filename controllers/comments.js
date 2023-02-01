@@ -40,7 +40,7 @@ const findAll = async (req, res) => {
         user: {
           id: comment.user._id,
           name: comment.user.name,
-          username: comment.user.username,
+          description: comment.user.description,
           avatar: comment.user.avatar,
         },
         post: comment.post,
