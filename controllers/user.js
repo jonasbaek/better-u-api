@@ -60,7 +60,6 @@ const update = async (req, res) => {
       res.status(401).send({ error: "Submit at least one field for update" });
     }
     const { userId, user } = req;
-    console.log(req.file);
     if (req.file && user?.avatar) {
       fs.unlink(`public/uploads/avatars/${user.avatar}`, (error) => {
         if (error) {
@@ -87,7 +86,6 @@ const update = async (req, res) => {
       message: "User successfully updated!",
     });
   } catch (error) {
-    console.log(error);
     res.status(500).send({ message: error.message });
   }
 };
