@@ -17,8 +17,8 @@ const findByIdService = (postId) =>
   Posts.findById(postId).populate("user").populate("comments");
 const findByUserIdService = (userId) =>
   Posts.find({ user: userId }).populate("user").populate("comments");
-const updateService = (postId, text, image) =>
-  Posts.findOneAndUpdate({ _id: postId }, { text, image });
+const updateService = (postId, text) =>
+  Posts.findOneAndUpdate({ _id: postId }, { text });
 const removeService = async (userId, postId) => {
   await User.findByIdAndUpdate(userId, {
     $pull: { posts: postId },

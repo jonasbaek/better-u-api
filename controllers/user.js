@@ -4,7 +4,7 @@ import fs from "fs";
 const create = async (req, res) => {
   try {
     const { name, email, avatar, description } = req.body;
-    res.status(201).send({
+    return res.status(201).send({
       user: {
         id: req.user._id,
         name,
@@ -15,7 +15,7 @@ const create = async (req, res) => {
       message: "User successfully created!",
     });
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    return res.status(500).send({ message: error.message });
   }
 };
 
@@ -25,18 +25,18 @@ const findAll = async (req, res) => {
     if (users.length === 0) {
       return res.status(400).send({ message: "Users not found" });
     }
-    res.send(users);
+    return res.send(users);
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    return res.status(500).send({ message: error.message });
   }
 };
 
 const findById = async (req, res) => {
   try {
     const user = req.user;
-    res.send(user);
+    return res.send(user);
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    return res.status(500).send({ message: error.message });
   }
 };
 
@@ -44,12 +44,12 @@ const findByName = async (req, res) => {
   try {
     const { name } = req.params;
     if (!name) {
-      res.status(401).send({ message: "Field is missing" });
+      return res.status(401).send({ message: "Field is missing" });
     }
     const user = await userService.findByName(name);
-    res.send(user);
+    return res.send(user);
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    return res.status(500).send({ message: error.message });
   }
 };
 
@@ -57,7 +57,9 @@ const update = async (req, res) => {
   try {
     const { name, password, image, description } = req.body;
     if (!name && !password && !description && !image) {
-      res.status(401).send({ error: "Submit at least one field for update" });
+      return res
+        .status(401)
+        .send({ error: "Submit at least one field for update" });
     }
     const { userId, user } = req;
     if (req.file && user?.avatar) {
@@ -82,20 +84,20 @@ const update = async (req, res) => {
       defineAvatar(),
       description
     );
-    res.status(201).send({
+    return res.status(201).send({
       message: "User successfully updated!",
     });
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    return res.status(500).send({ message: error.message });
   }
 };
 
 const remove = async (req, res) => {
   try {
     await userService.removeService(req.params.userId);
-    res.send({ message: "User deleted successfully!" });
+    return res.send({ message: "User deleted successfully!" });
   } catch (error) {
-    res.status("500").send(error.message);
+    return res.status("500").send(error.message);
   }
 };
 

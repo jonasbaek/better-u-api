@@ -5,7 +5,7 @@ const create = async (req, res) => {
   try {
     const { text } = req.body;
     if (!text) {
-      res.status(400).send({
+      return res.status(400).send({
         message: "Submit all fields for registration",
       });
     }
@@ -14,9 +14,9 @@ const create = async (req, res) => {
       image: req.file ? req.file.filename : null,
       user: req.currentUser._id,
     });
-    res.sendStatus(201);
+    return res.sendStatus(201);
   } catch (error) {
-    res.status(500).send(error.message);
+    return res.status(500).send(error.message);
   }
 };
 
@@ -24,7 +24,7 @@ const findAll = async (req, res) => {
   try {
     const { nextUrl, limit, total } = req.pagination;
     const posts = await postsService.findAllService(limit);
-    res.send({
+    return res.send({
       nextUrl,
       limit,
       total,
@@ -45,16 +45,16 @@ const findAll = async (req, res) => {
       })),
     });
   } catch (error) {
-    res.status("500").send(error.message);
+    return res.status("500").send(error.message);
   }
 };
 
 const findById = async (req, res) => {
   try {
     const post = req.post;
-    res.send(post);
+    return res.send(post);
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    return res.status(500).send({ message: error.message });
   }
 };
 
@@ -82,23 +82,23 @@ const findByUserId = async (req, res) => {
       })),
     });
   } catch (error) {
-    res.status("500").send(error.message);
+    return res.status("500").send(error.message);
   }
 };
 
 const update = async (req, res) => {
   try {
-    const { text, image } = req.body;
+    const { text } = req.body;
     if (!text) {
-      res.status(401).send({ message: "Missing fields!" });
+      return res.status(401).send({ message: "Missing fields!" });
     }
     const { postId } = req.params;
-    await postsService.updateService(postId, text, image);
-    res.status(201).send({
+    await postsService.updateService(postId, text);
+    return res.status(201).send({
       message: "Post successfully updated!",
     });
   } catch (error) {
-    res.status("500").send(error.message);
+    return res.status("500").send(error.message);
   }
 };
 
@@ -134,7 +134,7 @@ const likePost = async (req, res) => {
 
     return res.send({ message: "Post has been liked!" });
   } catch (error) {
-    res.status("500").send(error.message);
+    return res.status("500").send(error.message);
   }
 };
 
