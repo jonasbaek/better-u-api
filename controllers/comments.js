@@ -4,7 +4,7 @@ const create = async (req, res) => {
   try {
     const { text } = req.body;
     if (!text) {
-      res.status(400).send({
+      return res.status(400).send({
         message: "Missing text field!",
       });
     }
@@ -13,9 +13,9 @@ const create = async (req, res) => {
       user: req.currentUser._id,
       post: req.post._id,
     });
-    res.sendStatus(201);
+    return res.sendStatus(201);
   } catch (error) {
-    res.status(500).send(error.message);
+    return res.status(500).send(error.message);
   }
 };
 
@@ -27,7 +27,7 @@ const findAll = async (req, res) => {
       limit,
       offset
     );
-    res.send({
+    return res.send({
       nextUrl,
       previousUrl,
       limit,
@@ -44,19 +44,20 @@ const findAll = async (req, res) => {
           avatar: comment.user.avatar,
         },
         post: comment.post,
+        createdAt: comment.createdAt,
       })),
     });
   } catch (error) {
-    res.status("500").send(error.message);
+    return res.status("500").send(error.message);
   }
 };
 
 const findById = async (req, res) => {
   try {
     const comment = req.comment;
-    res.send(comment);
+    return res.send(comment);
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    return res.status(500).send({ message: error.message });
   }
 };
 
@@ -64,15 +65,15 @@ const update = async (req, res) => {
   try {
     const { text } = req.body;
     if (!text) {
-      res.status(401).send({ message: "Missing fields!" });
+      return res.status(401).send({ message: "Missing fields!" });
     }
     const { commentId } = req.params;
     await commentsService.updateService(commentId, text);
-    res.status(201).send({
+    return res.status(201).send({
       message: "Post successfully updated!",
     });
   } catch (error) {
-    res.status("500").send(error.message);
+    return res.status("500").send(error.message);
   }
 };
 
@@ -83,7 +84,7 @@ const remove = async (req, res) => {
     await commentsService.removeService(postId, commentId);
     return res.send({ message: "Comment deleted successfully!" });
   } catch (error) {
-    res.status("500").send(error.message);
+    return res.status("500").send(error.message);
   }
 };
 

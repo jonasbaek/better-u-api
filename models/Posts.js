@@ -4,7 +4,7 @@ const PostsSchema = new mongoose.Schema({
   text: {
     type: String,
     required: true,
-    maxlength: [5000, "Text must be less than 5000 characters"],
+    maxlength: [2000, "Text must be less than 2000 characters"],
   },
   createdAt: {
     type: Date,

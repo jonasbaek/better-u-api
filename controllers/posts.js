@@ -45,7 +45,7 @@ const findAll = async (req, res) => {
       })),
     });
   } catch (error) {
-    return res.status("500").send(error.message);
+    return res.status(500).send(error.message);
   }
 };
 
@@ -82,7 +82,7 @@ const findByUserId = async (req, res) => {
       })),
     });
   } catch (error) {
-    return res.status("500").send(error.message);
+    return res.status(500).send(error.message);
   }
 };
 
@@ -98,7 +98,7 @@ const update = async (req, res) => {
       message: "Post successfully updated!",
     });
   } catch (error) {
-    return res.status("500").send(error.message);
+    return res.status(500).send(error.message);
   }
 };
 
@@ -116,7 +116,7 @@ const remove = async (req, res) => {
     await postsService.removeService(req.currentUser._id, postId);
     return res.send({ message: "Post deleted successfully!" });
   } catch (error) {
-    return res.status("500").send(error.message);
+    return res.status(500).send(error.message);
   }
 };
 
@@ -134,7 +134,7 @@ const likePost = async (req, res) => {
 
     return res.send({ message: "Post has been liked!" });
   } catch (error) {
-    return res.status("500").send(error.message);
+    return res.status(500).send(error.message);
   }
 };
 

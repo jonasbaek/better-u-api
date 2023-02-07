@@ -28,11 +28,11 @@ export const commentsPaginationMiddleware = async (req, res, next) => {
   const currentUrl = req.baseUrl;
   const nextPage = offset + limit;
   const nextUrl =
-    nextPage < total ? `${currentUrl}?limit=${limit}&offset=${nextPage}` : null;
+    nextPage < total ? `?limit=${limit}&offset=${nextPage}` : null;
 
   const previous = offset - limit < 0 ? null : offset - limit;
   const previousUrl =
-    previous != null ? `${currentUrl}?limit=${limit}&offset=${previous}` : null;
+    previous != null ? `?limit=${limit}&offset=${previous}` : null;
   req.pagination = { nextUrl, previousUrl, limit, offset, total };
   next();
 };
