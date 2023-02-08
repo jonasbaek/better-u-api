@@ -20,9 +20,9 @@ const updateService = (commentId, text) =>
   Comments.findOneAndUpdate({ _id: commentId }, { text });
 const removeService = async (postId, commentId) => {
   await Posts.findByIdAndUpdate(postId, {
-    $pull: { comments: { _id: commentId } },
+    $pull: { comments: commentId },
   });
-  await Comments.findOneAndDelete(commentId);
+  await Comments.findByIdAndDelete(commentId);
 };
 const countComments = (postId) => Comments.countDocuments({ post: postId });
 

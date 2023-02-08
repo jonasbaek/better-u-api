@@ -29,10 +29,8 @@ const PostsSchema = new mongoose.Schema({
   ],
   comments: [
     {
-      comment: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Comments",
-      },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Comments",
     },
   ],
   image: {
