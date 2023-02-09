@@ -1,5 +1,6 @@
 import Posts from "../models/Posts.js";
 import User from "../models/User.js";
+import Comments from "../models/Comments.js";
 
 const createService = async (body) => {
   const post = await Posts.create(body);
@@ -23,6 +24,9 @@ const removeService = async (userId, postId) => {
   await User.findByIdAndUpdate(userId, {
     $pull: { posts: postId },
   });
+  const posts = await Posts.find({ user: userId });
+  const postIds = posts.map((post) => post._id);
+  await Comments.remove({ post: { $in: postIds } });
   await Posts.findByIdAndDelete(postId);
 };
 const likePostService = async (postId, userId) => {
