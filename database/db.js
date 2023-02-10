@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const connectDatabase = () => {
   mongoose.set("strictQuery", true);
   mongoose
-    .connect(`${process.env.mongodbConnection}`, {
+    .connect(`${process.env.MONGODB_URI}`, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })

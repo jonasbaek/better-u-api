@@ -24,11 +24,28 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 export const __dirname = dirname(__filename);
 
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "pug");
-
 connectDatabase();
+
 app.use(cors());
+
+app.use((res, req, next) => {
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET,OPTIONS,PATCH,DELETE,POST,PUT"
+  );
+  res.header(
+    "Access-Control-Allow-Headers",
+    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
+  );
+
+  if (req.method === "OPTIONS") {
+    res.status(200).end();
+    return;
+  }
+  next();
+});
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -59,9 +76,8 @@ app.use(function (err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
 
-  // render the error page
+  // return the error message
   res.status(err.status || 500);
-  res.render("error");
+  res.json({ error: "An error occurred" });
 });
-
 export default app;
